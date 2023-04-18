@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Weather condition</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+	<style>
+		body{
+			background: linear-gradient(to right,pink,blue);
+		}
+	</style>
+</head>
+<body>
+	<div class="container text-center mt-5 border bg-white">
+		<h1 class="mt-2 mb-3">Weather App</h1>
+		<div>
+		<input type="text" placeholder="Enter the location" class="form-control mx-auto shadow text-secondary bg-light border-0"style="width:50%" id="location-input"/>
+		<button onclick="letsGo()" class="btn btn-primary mt-4">Get Started</button>
+		</div>
+		 <img src="cloud.png" alt="image" style="width: 20%" class="mt-2" />	 
+		<h2><span id="temp-value">25</span>&#176c</h2>
+		<h3 id="weather-condition">Cloudy</h3>
+		<p id="location">Hyderabad</p>
+
+	</div>
+	<script>
+		let input=document.getElementById("location-input")
+		let temperature=document.getElementById("temp-value")
+		let weather=document.getElementById("weather-condition")
+		let place=document.getElementById("location")
+		
+		const apikey=`32db2631dd68a9ec73ec27f1cb22d358`;
+		
+		function letsGo(){
+			if(input.value==""){
+				alert('please enter some location')
+			}
+			else{
+				loc=input.value
+				url=`https://api.openweathermap.org/data/2.5/weather?q=${loc}&appid=${apikey}`
+				fetch(url).then(res=>res.json())
+				.then(data=>{
+					console.log(data)
+					const{name}=data
+					const{temp}=data.main
+					const{description}=data.weather[0]
+					temperature.innerText=Math.floor(temp-273);
+					place.innerText=name;
+					weather.innerText=description;
+				})
+				.catch(()=>{
+					alert("Enter valid location")
+				})
+				input.value=""
+			}
+		}
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+</body>
+</html>
